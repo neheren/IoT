@@ -3,11 +3,13 @@ extends layout
 block content
   script.
     setInterval(() =>
-      fetch('/data').then(res => res.json()).then(data =>
-        $('.data').html(JSON.stringify(data))
-      )
-    , 300)
-
-  h1= title
-  p Welcome to #{title}
-  p(class='data') fuck
+      fetch('/data').then(res => res.json()).then(data =>{
+        console.log(data)
+        $('.data').html((data.html))
+        $('.deviceName').html('Live updating from: '+data.content.app_id)
+      })
+    , 1000)
+  
+  h1= "IOT device status"
+  p(class='deviceName')= "Live updating from..." 
+  p(class='data')= "fetching..."

@@ -3,8 +3,6 @@ const { data, application } = require('ttn')
 var fs = require("fs");
 
 var content = fs.readFileSync("currentData.json");
-console.log("Output Content : \n"+ content);
-
 const appID = "washingmachine_nas"
 const accessKey = "ttn-account-v2.c-h2jhoxpesYC_0ETfiniOc52VBPHX4BUEPoCbu8VJ4"
 const appEUI = '70B3D57ED002B1EE'
