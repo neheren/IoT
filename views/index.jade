@@ -1,5 +1,13 @@
 extends layout
 
 block content
+  script.
+    setInterval(() =>
+      fetch('/data').then(res => res.json()).then(data =>
+        $('.data').html(JSON.stringify(data))
+      )
+    , 300)
+
   h1= title
   p Welcome to #{title}
+  p(class='data') fuck
