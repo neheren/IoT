@@ -1,4 +1,3 @@
-
 const { data, application } = require('ttn')
 var fs = require("fs");
 
