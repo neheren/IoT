@@ -8,6 +8,7 @@ block content
         globalData = data
         $('.data').html((data.html))
         $('.deviceName').html('Live updating from: '+ data.content.app_id)
+        $('.lastUpdate').html('Last updated: ' + Date(data.content.metadata.time))
       })
     , 3000)
 
@@ -15,6 +16,7 @@ block content
       fetch('/data').then(res => res.json()).then(data =>{
         const mapUrl = `https://maps.google.com/maps?q=${data.content.metadata.gateways[0].latitude},${data.content.metadata.gateways[0].longitude}&hl=es&z=14&output=embed`
         console.log({mapUrl})
+
         $('iframe').attr('src', mapUrl)
       })
     }
@@ -24,6 +26,7 @@ block content
   
   h1= "IOT device status"
   p(class='deviceName')= "Live updating from..." 
+  p(class='lastUpdate')= "Last updated: ..." 
   p(class='data')= "fetching..."
 
 
