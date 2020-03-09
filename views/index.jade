@@ -9,7 +9,6 @@ block content
       lastUnixTime = ts
       $('.interval').html('Data call delta update time: ' + deltaTime)
       
-      console.log('update')
       fetch('/data').then(res => res.json()).then(data =>{
         globalData = data
         $('.data').html((data.html))
@@ -64,8 +63,7 @@ block content
     }
     update()
 
-    var socket = io(window.location.href === 'http://localhost:3000/' ? 'http://localhost:4000/' : 'ws://' + window.location.host + ':4000');
-    var socket = io('ws://dry-garden-18914.herokuapp.com:4000');
+    var socket = io(window.location.href === 'http://localhost:3000/' ? 'http://localhost:3000/' : 'ws://' + window.location.host);
 
     socket.on('connect', function(){
       console.log('connect')
@@ -76,6 +74,7 @@ block content
     
     var lastUnixTime = (new Date()).getTime() / 1000;
     socket.on('update', function(data) {
+      console.log('socket update')
       update()
     });
 

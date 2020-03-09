@@ -21,13 +21,30 @@ app.set('port', port);
 
 var server = http.createServer(app);
 
+
+
 /**
  * Listen on provided port, on all network interfaces.
  */
 
+
+var io = require('socket.io').listen(server)
+
+
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
+io.on('connection', client => {
+  client.on('event', data => { /* … */ });
+  client.on('disconnect', () => { /* … */ });
+});
+
+setInterval(() => {
+  console.log('emitting')
+  io.sockets.emit('update', 'everyone');
+}, 2400)
+
 
 /**
  * Normalize a port into a number, string, or false.
