@@ -1,12 +1,12 @@
 const { data, application } = require('ttn')
-var fs = require("fs");
-const moment = require('moment');
-const server = require('http').createServer();
-const io = require('socket.io')(server);
+var fs = require("fs")
+const moment = require('moment')
+const server = require('http').createServer()
+const io = require('socket.io')(server)
 
 const appID = "laundrytracker"
 const accessKey = "ttn-account-v2.tlwd-1CEZQnyg2J2XTbjaT4y5r3mLDwJir3HiaBB5Wo"
-
+let deviceIsActive = false
 
 io.on('connection', client => {
   client.on('event', data => { /* … */ });
@@ -22,7 +22,6 @@ server.listen(4000);
 // }, 2400)
   
 function collectDataPoint() {
-
   try{
     let content = fs.readFileSync("currentData.json")
     content = JSON.parse(content)
@@ -57,6 +56,7 @@ module.exports = async () => {
     })
     client.on('activation', (devID, payload) => {
       console.log("Received activation from ", devID)
+      deviceIsActive = true
       console.log({payload})
     })
   } catch (err) {
