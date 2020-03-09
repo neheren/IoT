@@ -9,7 +9,7 @@ block content
         $('.deviceName').html('Live updating from: '+ data.content.app_id)
         $('.lastUpdate').html('Last updated: ' + Date(data.content.metadata.time))
       }).catch(() => {
-        $('.data').html('CONNECTION ERROR')
+        $('.data').html('INTERNAL CONNECTION ERROR')
       })
 
 
@@ -52,7 +52,7 @@ block content
           }
         });
       }).catch(() => {
-        $('.status').html('Current status: CONNECTION ERROR')
+        $('.status').html('Current status: INTERNAL CONNECTION ERROR')
       })
     }
     , 1000)

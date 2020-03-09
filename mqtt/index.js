@@ -1,22 +1,47 @@
 const { data, application } = require('ttn')
 var fs = require("fs");
+const moment = require('moment');
 
 var content = fs.readFileSync("currentData.json");
 const appID = "laundrytracker"
 const accessKey = "ttn-account-v2.tlwd-1CEZQnyg2J2XTbjaT4y5r3mLDwJir3HiaBB5Wo"
 const appEUI = '70B3D57ED002B8EE'
 
+function collectDataPoint() {
+
+  try{
+    let content = fs.readFileSync("currentData.json")
+    content = JSON.parse(content)
+    const currentDataPiece = (content.payload_fields.short)
+    
+    const dataPoints = JSON.parse(fs.readFileSync("dataPoints.json"))
+    dataPoints.amplitude.push(currentDataPiece)
+    dataPoints.dates.push(moment().format('HH.mm:ss'))
+    console.log('sampling time point: ' + moment().format('HH.mm:ss') + ', with amplitude: ' + currentDataPiece)
+    if(dataPoints.amplitude.length > 3600){
+      console.log('REMOVING DATA')
+      dataPoints.amplitude = dataPoints.amplitude.slice(1 - dataPoints.amplitude.length)
+      dataPoints.dates = dataPoints.dates.slice(1 - dataPoints.dates.length)
+    }
+
+    fs.writeFile('dataPoints.json', JSON.stringify(dataPoints), (err) => console.warn({err}))
+  }catch(e){
+    console.warn('Data collection error'+ e)
+  }
+}
+
 module.exports = async () => {
   try{
     const client = await data(appID, accessKey)
     client.on("uplink", function (devID, payload) {
       console.log("Received uplink from ", devID)
-      console.log(payload)
-      fs.writeFile('currentData.json', JSON.stringify(payload), console.warn)
+      console.log({payload_fields: payload.payload_fields})
+      collectDataPoint()
+      fs.writeFile('currentData.json', JSON.stringify(payload), (err) => console.warn({err}))
     })
     client.on('activation', (devID, payload) => {
       console.log("Received activation from ", devID)
-      console.log(payload)
+      console.log({payload})
     })
   } catch (err) {
     console.error(err)
