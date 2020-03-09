@@ -28,7 +28,7 @@ var server = http.createServer(app);
  */
 
 
-var io = require('socket.io').listen(server)
+io = require('socket.io').listen(server)
 
 
 server.listen(port);
@@ -40,10 +40,10 @@ io.on('connection', client => {
   client.on('disconnect', () => { /* … */ });
 });
 
-setInterval(() => {
-  console.log('emitting')
-  io.sockets.emit('update', 'everyone');
-}, 2400)
+// setInterval(() => {
+//   console.log('emitting')
+//   io.sockets.emit('update', 'everyone');
+// }, 2400)
 
 
 /**
