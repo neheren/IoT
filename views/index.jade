@@ -2,7 +2,14 @@ extends layout
 
 block content
   script.
-    setInterval(() => {
+
+    function update() {
+      var ts = ((new Date()).getTime() / 1000);
+      var deltaTime = (ts - lastUnixTime).toFixed(2)
+      lastUnixTime = ts
+      $('.interval').html('Data call delta update time: ' + deltaTime)
+      
+      console.log('update')
       fetch('/data').then(res => res.json()).then(data =>{
         globalData = data
         $('.data').html((data.html))
@@ -23,7 +30,7 @@ block content
         for(var i = amplitude.length - samples; i < amplitude.length; i++){
           avgValue += amplitude[i]
         }
-        avgValue /= samples;
+        avgValue /= samples; 
         if(avgValue > 100) {
           
         }
@@ -53,9 +60,23 @@ block content
         });
       }).catch(() => {
         $('.status').html('Current status: INTERNAL CONNECTION ERROR')
-      })
+      })   
     }
-    , 1000)
+
+    var socket = io('http://localhost:4000');
+    socket.on('connect', function(){
+      console.log('connect')
+    });
+    socket.on('disconnect', function(){
+      console.log('disconnect')
+    });
+    
+    var lastUnixTime = (new Date()).getTime() / 1000;
+    socket.on('update', function(data) {
+      update()
+    });
+
+
 
     function getMapUrl () {
       fetch('/data').then(res => res.json()).then(data =>{
@@ -70,7 +91,7 @@ block content
 
   
   h1= "IOT device status"
-  h2= 'Data call interval (ms): ' + callInterval
+  h2(class='interval')= 'Data call delta update time: '
   h2(class='status')= 'Current status: '
   canvas(id="myChart" width="400" height="200")
 

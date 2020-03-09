@@ -1,12 +1,26 @@
 const { data, application } = require('ttn')
 var fs = require("fs");
 const moment = require('moment');
+const server = require('http').createServer();
+const io = require('socket.io')(server);
 
-var content = fs.readFileSync("currentData.json");
 const appID = "laundrytracker"
 const accessKey = "ttn-account-v2.tlwd-1CEZQnyg2J2XTbjaT4y5r3mLDwJir3HiaBB5Wo"
-const appEUI = '70B3D57ED002B8EE'
 
+
+io.on('connection', client => {
+  client.on('event', data => { /* … */ });
+  client.on('disconnect', () => { /* … */ });
+});
+
+server.listen(4000);
+
+
+// for testing
+setInterval(() => {
+  io.sockets.emit('update', 'everyone');
+}, 2400)
+  
 function collectDataPoint() {
 
   try{
@@ -25,6 +39,8 @@ function collectDataPoint() {
     }
 
     fs.writeFile('dataPoints.json', JSON.stringify(dataPoints), (err) => console.warn({err}))
+    io.sockets.emit('update', 'everyone');
+
   }catch(e){
     console.warn('Data collection error'+ e)
   }

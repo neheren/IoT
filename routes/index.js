@@ -8,6 +8,10 @@ const callInterval = 1000
 
 mqtt()
 
+
+
+
+
 /* GET home page. */
 router.get('/', (req, res) => {
   res.render('index', { callInterval });

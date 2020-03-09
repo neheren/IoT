@@ -16,6 +16,7 @@
     "json-pretty-html": "^1.1.6",
     "moment": "^2.24.0",
     "morgan": "~1.9.1",
+    "socket.io": "^2.3.0",
     "ttn": "git+https://github.com/TheThingsNetwork/node-app-sdk.git"
   }
 }
