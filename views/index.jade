@@ -16,19 +16,29 @@ block content
       // DATA POINTS
       fetch('/data-points').then(res => res.json()).then(data => {
         console.log(data)
-        var ctx = document.getElementById('myChart').getContext('2d');
-          var myLineChart = new Chart(ctx, {
-              type: 'line',
-              data: [{
-                  x: 10,
-                  y: 20
-              }, {
-                  x: 15,
-                  y: 10
-              }],
-              options: {backgroundColor: 'red'}
-          })
-        })
+        new Chart(document.getElementById("myChart"), {
+          type: 'line',
+          data: {
+            datasets: [{ 
+                data: data,
+                label: "Amplitude",
+                borderColor: "#3e95cd",
+                fill: false
+              }
+            ]
+          },
+          options: {
+            scales: {
+              xAxes: [{
+                type: 'time',
+                time: {
+                    unit: 'month'
+                }              
+              }]
+            }
+          }
+        });
+      })
     }
     , 1000)
 

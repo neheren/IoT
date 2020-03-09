@@ -15,7 +15,7 @@ function collectDataPoint() {
     const currentDataPiece = (content.payload_raw.data[0])
     
     const dataPoints = JSON.parse(fs.readFileSync("dataPoints.json"))
-    dataPoints.push(currentDataPiece)
+    dataPoints.push({x: new Date(), y: currentDataPiece})
     fs.writeFile('dataPoints.json', JSON.stringify(dataPoints), console.warn)
     console.log(dataPoints)
   }catch(e){
