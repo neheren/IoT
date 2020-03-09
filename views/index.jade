@@ -63,8 +63,7 @@ block content
     }
     update()
 
-    var socket = io(window.location.href === 'http://localhost:3000/' ? 'http://localhost:3000/' : 'ws://' + window.location.host);
-    var socket = io("ws://dry-garden-18914.herokuapp.com");
+    var socket = io(window.location.href);
 
     socket.on('connect', function(){
       console.log('connect')
