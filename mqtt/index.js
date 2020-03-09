@@ -17,9 +17,9 @@ server.listen(4000);
 
 
 // for testing
-setInterval(() => {
-  io.sockets.emit('update', 'everyone');
-}, 2400)
+// setInterval(() => {
+//   io.sockets.emit('update', 'everyone');
+// }, 2400)
   
 function collectDataPoint() {
 
