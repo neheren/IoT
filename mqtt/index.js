@@ -2,9 +2,9 @@ const { data, application } = require('ttn')
 var fs = require("fs");
 
 var content = fs.readFileSync("currentData.json");
-const appID = "washingmachine_nas"
-const accessKey = "ttn-account-v2.c-h2jhoxpesYC_0ETfiniOc52VBPHX4BUEPoCbu8VJ4"
-const appEUI = '70B3D57ED002B1EE'
+const appID = "laundrytracker"
+const accessKey = "ttn-account-v2.tlwd-1CEZQnyg2J2XTbjaT4y5r3mLDwJir3HiaBB5Wo"
+const appEUI = '70B3D57ED002B8EE'
 
 module.exports = async () => {
   try{
@@ -28,7 +28,7 @@ module.exports = async () => {
     .then(function (client) {
       return client.get()
     })
-    .then(function (app) {
+    .then(function (app) { 
       console.log("Got app", app)
     })
     .catch(function (err) {

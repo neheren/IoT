@@ -2,15 +2,35 @@ extends layout
 
 block content
   script.
-    setInterval(() =>
+    setInterval(() => {
       fetch('/data').then(res => res.json()).then(data =>{
         console.log(data)
         globalData = data
         $('.data').html((data.html))
         $('.deviceName').html('Live updating from: '+ data.content.app_id)
         $('.lastUpdate').html('Last updated: ' + Date(data.content.metadata.time))
+        $('.status').html('Current status: : ')
       })
-    , 3000)
+
+
+      // DATA POINTS
+      fetch('/data-points').then(res => res.json()).then(data => {
+        console.log(data)
+        var ctx = document.getElementById('myChart').getContext('2d');
+          var myLineChart = new Chart(ctx, {
+              type: 'line',
+              data: [{
+                  x: 10,
+                  y: 20
+              }, {
+                  x: 15,
+                  y: 10
+              }],
+              options: {backgroundColor: 'red'}
+          })
+        })
+    }
+    , 1000)
 
     function getMapUrl () {
       fetch('/data').then(res => res.json()).then(data =>{
@@ -21,10 +41,12 @@ block content
       })
     }
     getMapUrl()
-    
+
 
   
   h1= "IOT device status"
+  h2= 'Data call interval (ms): ' + callInterval
+  h2(class='status')= 'Current status: '
   p(class='deviceName')= "Live updating from..." 
   p(class='lastUpdate')= "Last updated: ..." 
   p(class='data')= "fetching..."
@@ -39,10 +61,12 @@ block content
       src=""
     ) 
   
- br 
- small
-   a (
-    href="https://maps.google.com/maps?q='+data.lat+','+data.lon+'&hl=es;z=14&amp;output=embed" 
-    style="color:#0000FF;text-align:left" 
-    target="_blank"
+  br 
+  small
+    a (
+      href="https://maps.google.com/maps?q='+data.lat+','+data.lon+'&hl=es;z=14&amp;output=embed" 
+      style="color:#0000FF;text-align:left" 
+      target="_blank"
     ) See map bigger
+  canvas(id="myChart" width="400" height="400")
+    
