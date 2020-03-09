@@ -8,6 +8,8 @@ block content
         $('.data').html((data.html))
         $('.deviceName').html('Live updating from: '+ data.content.app_id)
         $('.lastUpdate').html('Last updated: ' + Date(data.content.metadata.time))
+      }).catch(() => {
+        $('.data').html('CONNECTION ERROR')
       })
 
 
@@ -49,6 +51,8 @@ block content
             }
           }
         });
+      }).catch(() => {
+        $('.status').html('Current status: CONNECTION ERROR')
       })
     }
     , 1000)
@@ -84,12 +88,5 @@ block content
       height="300"
       src=""
     ) 
-  
-  br 
-  small
-    a (
-      href="https://maps.google.com/maps?q='+data.lat+','+data.lon+'&hl=es;z=14&amp;output=embed" 
-      style="color:#0000FF;text-align:left" 
-      target="_blank"
-    ) See map bigger
+
     
