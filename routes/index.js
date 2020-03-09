@@ -1,4 +1,5 @@
 var express = require('express')
+const moment = require('moment');
 const mqtt = require('../mqtt')
 var router = express.Router()
 var fs = require("fs");
@@ -12,12 +13,18 @@ function collectDataPoint() {
   try{
     let content = fs.readFileSync("currentData.json")
     content = JSON.parse(content)
-    const currentDataPiece = (content.payload_raw.data[0])
+    const currentDataPiece = (content.payload_fields.short)
     
     const dataPoints = JSON.parse(fs.readFileSync("dataPoints.json"))
-    dataPoints.push({x: new Date(), y: currentDataPiece})
+    dataPoints.amplitude.push(currentDataPiece)
+    dataPoints.dates.push(moment().format('HH.mm:ss'))
+    if(dataPoints.amplitude.length > 3600){
+      console.log('REMOVING DATA')
+      dataPoints.amplitude = dataPoints.amplitude.slice(1 - dataPoints.amplitude.length)
+      dataPoints.dates = dataPoints.dates.slice(1 - dataPoints.dates.length)
+    }
+
     fs.writeFile('dataPoints.json', JSON.stringify(dataPoints), console.warn)
-    console.log(dataPoints)
   }catch(e){
     console.warn('Data collection error')
   }
@@ -35,7 +42,7 @@ const schedule = setInterval(() => {
 
 /* GET home page. */
 router.get('/', (req, res) => {
-  res.render('index', { title: 'Express', callInterval });
+  res.render('index', { callInterval });
 })
 
 router.get('/data', (req, res) => {

@@ -16,25 +16,27 @@ block content
       // DATA POINTS
       fetch('/data-points').then(res => res.json()).then(data => {
         console.log(data)
+        const dates = data.dates
+        const amplitude = data.amplitude
+
         new Chart(document.getElementById("myChart"), {
           type: 'line',
           data: {
+            labels: dates,
             datasets: [{ 
-                data: data,
+                data: amplitude,
                 label: "Amplitude",
                 borderColor: "#3e95cd",
-                fill: false
+                fill: false,
+                pointRadius: 0
               }
             ]
           },
           options: {
-            scales: {
-              xAxes: [{
-                type: 'time',
-                time: {
-                    unit: 'month'
-                }              
-              }]
+            animation: false,
+            title: {
+              display: true,
+              text: 'Washing machine amplitude for the last hour'
             }
           }
         });
@@ -57,9 +59,12 @@ block content
   h1= "IOT device status"
   h2= 'Data call interval (ms): ' + callInterval
   h2(class='status')= 'Current status: '
+  canvas(id="myChart" width="400" height="200")
+
   p(class='deviceName')= "Live updating from..." 
   p(class='lastUpdate')= "Last updated: ..." 
   p(class='data')= "fetching..."
+
 
 
   div(style="float:right")
@@ -78,5 +83,4 @@ block content
       style="color:#0000FF;text-align:left" 
       target="_blank"
     ) See map bigger
-  canvas(id="myChart" width="400" height="400")
     
